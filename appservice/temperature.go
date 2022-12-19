@@ -2,25 +2,18 @@ package main
 
 import (
 	"fmt"
+	"log"
 
-	"github.com/stianeikeland/go-rpio/v4"
+	"github.com/d2r2/go-dht"
 )
 
 func main() {
-	fmt.Println("Start service")
-	if err := rpio.Open(); err != nil {
-		panic(err)
+	temperature, humidity, retried, err :=
+		dht.ReadDHTxxWithRetry(dht.DHT11, 4, false, 10)
+	if err != nil {
+		log.Fatal(err)
 	}
-
-	pin := rpio.Pin(4)
-	pin.Output()          // Output mode
-	pin.High()            // Set pin High
-	pin.Low()             // Set pin Low
-	pin.Toggle()          // Toggle pin (Low -> High -> Low)
-	pin.Input()           // Input mode
-	res := pin.Read()     // Read state from pin (High / Low)
-	pin.Mode(rpio.Output) // Alternative syntax
-	pin.Write(rpio.High)  // Alternative syntax
-	fmt.Println(res)
-	rpio.Close()
+	// Print temperature and humidity
+	fmt.Printf("Temperature = %v*C, Humidity = %v%% (retried %d times)\n",
+		temperature, humidity, retried)
 }
