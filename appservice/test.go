@@ -34,7 +34,7 @@ func main() {
 	pin.Output()
 
 	// Toggle pin 20 times
-	for x := 0; x < 20; x++ {
+	for x := 0; x < 200; x++ {
 		pin.Toggle()
 		time.Sleep(time.Second / 5)
 	}
