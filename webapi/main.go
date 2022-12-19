@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"os"
-	"strconv"
 	"strings"
 	"time"
 
@@ -20,19 +19,18 @@ import (
 )
 
 func init() {
-	if err := godotenv.Load("../.env.local"); err != nil {
+	err := godotenv.Load(".env.local")
+	if err != nil {
 		panic("Error loading .env file")
 	}
 
 	// Initial ENV
-	port, _ := strconv.Atoi(os.Getenv("API_PORT"))
 	configs.API_NAME = os.Getenv("API_NAME")
 	configs.API_DESCRIPTION = os.Getenv("API_DESCRIPTION")
-	configs.API_PORT = port
+	configs.API_PORT = os.Getenv("API_PORT")
 	configs.API_DBNAME = os.Getenv("API_DBNAME")
 
-	if _, err := gorm.Open(sqlite.Open(fmt.Sprintf("../database/%s", configs.API_DBNAME)), &gorm.Config{
-		DisableAutomaticPing:                     true,
+	configs.Store, err = gorm.Open(sqlite.Open(configs.API_DBNAME), &gorm.Config{
 		DisableForeignKeyConstraintWhenMigrating: false,
 		SkipDefaultTransaction:                   true,
 		NowFunc: func() time.Time {
@@ -44,12 +42,13 @@ func init() {
 			NoLowerCase:   false,  // skip the snake_casing of names
 			NameReplacer:  strings.NewReplacer("CID", "Cid"),
 		},
-	}); err != nil {
+	})
+	if err != nil {
 		panic("failed to connect database")
 	}
 
 	// After connect db is completed
-	configs.SetUp()
+	configs.SetDB()
 }
 
 func main() {
@@ -69,5 +68,5 @@ func main() {
 	app.Use(logger.New())
 	app.Static("/", "./public")
 	routes.SetUpRouter(app)
-	app.Listen(fmt.Sprintf(":%d", configs.API_PORT))
+	app.Listen(fmt.Sprintf(":%s", configs.API_PORT))
 }

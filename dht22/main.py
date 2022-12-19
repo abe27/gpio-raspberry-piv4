@@ -1,10 +1,9 @@
 #!/usr/local/bin/python3
 # -*- coding: utf-8 -*-
 import DHT22 as DHT22
-import time
 
 
-#GPIO 21
+#GPIO 17, Pin Physical 11
 out = 17
 
 #c = celsius
