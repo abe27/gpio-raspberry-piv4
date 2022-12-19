@@ -23,6 +23,6 @@ func main() {
 		log.Fatal(err)
 	}
 	// Print temperature and humidity
-	fmt.Printf("Pin 11 Temperature = %v*C, Humidity = %v%% (retried %d times)\n",
+	fmt.Printf("Pin 17 Temperature = %v*C, Humidity = %v%% (retried %d times)\n",
 		temperature, humidity, retried)
 }
