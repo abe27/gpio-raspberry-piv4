@@ -1,24 +1,41 @@
+/*
+A blinker example using go-rpio library.
+Requires administrator rights to run
+Toggles a LED on physical pin 19 (mcu pin 10)
+Connect a LED with resistor from pin 19 to ground.
+*/
+
 package main
 
 import (
 	"fmt"
+	"os"
+	"time"
 
 	"github.com/stianeikeland/go-rpio/v4"
 )
 
+var (
+	// Use mcu pin 10, corresponds to physical pin 19 on the pi
+	pin = rpio.Pin(4)
+)
+
 func main() {
-	pin := rpio.Pin(4)
+	// Open and map memory to access gpio, check for errors
+	if err := rpio.Open(); err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
 
-	pin.Output() // Output mode
-	pin.High()   // Set pin High
-	pin.Low()    // Set pin Low
-	pin.Toggle() // Toggle pin (Low -> High -> Low)
+	// Unmap gpio memory when done
+	defer rpio.Close()
 
-	pin.Input()       // Input mode
-	res := pin.Read() // Read state from pin (High / Low)
-	fmt.Println(res)
+	// Set pin to output mode
+	pin.Output()
 
-	pin.Mode(rpio.Output) // Alternative syntax
-	pin.Write(rpio.High)  // Alternative syntax
-	rpio.Close()
+	// Toggle pin 20 times
+	for x := 0; x < 20; x++ {
+		pin.Toggle()
+		time.Sleep(time.Second / 5)
+	}
 }
