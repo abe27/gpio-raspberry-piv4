@@ -5,7 +5,7 @@ import time
 
 
 #GPIO 21
-out = 17
+out = 11
 
 #c = celsius
 #f = Fahrenheit
