@@ -9,7 +9,7 @@ import (
 
 func main() {
 	temperature, humidity, retried, err :=
-		dht.ReadDHTxxWithRetry(dht.DHT22, 7, false, 10)
+		dht.ReadDHTxxWithRetry(dht.DHT22, 17, false, 10)
 	if err != nil {
 		log.Fatal(err)
 	}
