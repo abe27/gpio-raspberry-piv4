@@ -18,5 +18,5 @@ func main() {
 		panic(err)
 	}
 
-	fmt.Printf("Temp=%f*C  Humidity=%f%\n", temperature, humidity)
+	fmt.Printf("Temp=%f*C  Humidity=%f \n", temperature, humidity)
 }
