@@ -7,8 +7,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/abe27/temp/webapi/configs"
-	"github.com/abe27/temp/webapi/routes"
+	"github.com/abe27/webapi/configs"
+	"github.com/abe27/webapi/routes"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/fiber/v2/middleware/logger"

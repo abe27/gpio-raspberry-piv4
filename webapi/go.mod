@@ -1,4 +1,4 @@
-module github.com/abe27/temp
+module github.com/abe27/webapi
 
 go 1.19
 
