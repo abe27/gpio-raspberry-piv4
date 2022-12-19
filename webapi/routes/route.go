@@ -1,7 +1,7 @@
 package routes
 
 import (
-	"github.com/abe27/temp/webapi/controllers"
+	"github.com/abe27/webapi/controllers"
 	"github.com/gofiber/fiber/v2"
 )
 

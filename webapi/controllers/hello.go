@@ -3,7 +3,7 @@ package controllers
 import (
 	"time"
 
-	"github.com/abe27/temp/webapi/models"
+	"github.com/abe27/webapi/models"
 	"github.com/gofiber/fiber/v2"
 )
 
