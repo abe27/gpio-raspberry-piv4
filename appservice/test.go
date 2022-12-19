@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	pin := rpio.Pin(10)
+	pin := rpio.Pin(11)
 
 	pin.Output() // Output mode
 	pin.High()   // Set pin High
