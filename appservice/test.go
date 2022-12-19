@@ -6,7 +6,7 @@ import (
 	"github.com/stianeikeland/go-rpio/v4"
 )
 
-func test() {
+func main() {
 	pin := rpio.Pin(10)
 
 	pin.Output() // Output mode
