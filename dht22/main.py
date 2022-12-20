@@ -67,12 +67,12 @@ if __name__ == '__main__':
                 "POST", f"{api_url}/temp", headers=headers, data=payload)
             print(response.json())
 
-            if temperature > alertOn:
+            if int(temperature) > alertOn:
                 # notification
                 if is_accept is False:
                     print(
                         f"notification: {i['line_token']['token']} is {is_accept}")
-                    message = f"""\n{serveName}\ntemplate: {temperature}\nhumidity {humidity}"""
+                    message = f"""\n{serveName}\ntemplate: {round(temperature, 2)}\nhumidity: {round(humidity, 2)}"""
                     notification(i['line_token']['token'], message)
 
     except Exception as ex:
