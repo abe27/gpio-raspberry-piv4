@@ -207,7 +207,11 @@ const DeviceComponent = () => {
                 <th>{x + 1}</th>
                 <td>{i.name}</td>
                 <td>{i.on_pin}</td>
-                <td>{i.alert_on}</td>
+                <td>
+                  <span className="text-yellow-800 hover:cursor-pointer">
+                    {i.alert_on}
+                  </span>
+                </td>
                 <td>
                   <button className="btn btn-ghost btn-xs">
                     {i.is_active ? (
