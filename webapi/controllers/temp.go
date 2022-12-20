@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"fmt"
+	"strconv"
 	"time"
 
 	"github.com/abe27/webapi/configs"
@@ -11,8 +12,13 @@ import (
 
 func GetAllTempData(c *fiber.Ctx) error {
 	var r models.Response
+	limit := 10
+	if c.Query("limit") != "" {
+		l, _ := strconv.Atoi(c.Query("limit"))
+		limit = l
+	}
 	var obj []models.TempData
-	if err := configs.Store.Order("updated_at desc").Where("is_active=?", true).Preload("Device").Find(&obj).Error; err != nil {
+	if err := configs.Store.Limit(limit).Order("updated_at desc").Where("is_active=?", true).Preload("Device").Find(&obj).Error; err != nil {
 		r.Message = err.Error()
 		return c.Status(fiber.StatusInternalServerError).JSON(&r)
 	}
