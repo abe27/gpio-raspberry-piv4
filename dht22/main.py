@@ -72,7 +72,7 @@ if __name__ == '__main__':
                 if is_accept is False:
                     print(
                         f"notification: {i['line_token']['token']} is {is_accept}")
-                    message = f"""\n{serveName} template: {temperature} humidity {humidity}"""
+                    message = f"""\n{serveName}\ntemplate: {temperature}\nhumidity {humidity}"""
                     notification(i['line_token']['token'], message)
 
     except Exception as ex:
