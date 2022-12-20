@@ -18,25 +18,40 @@
 import json
 import requests
 import sys
+# import DHT22 as DHT22
 from random import *
 
 api_url = "http://localhost:4040/api/v1"
 
 
+def notification(token, message):
+    url = "https://notify-api.line.me/api/notify"
+    payload = f'message={message}'
+    headers = {
+        'Authorization': f'Bearer {token}',
+        'Content-Type': 'application/x-www-form-urlencoded'
+    }
+
+    response = requests.request("POST", url, headers=headers, data=payload)
+
+    print(response.text)
+
 def get_device():
-    response = requests.request("GET", f"{api_url}/device")
+    response = requests.request("GET", f"{api_url}/notification")
     obj = response.json()
     return obj["data"]
+
 
 if __name__ == '__main__':
     try:
         device = get_device()
         for i in device:
-            serveName = i["name"]
-            onPin = float(i["on_pin"])
-            alertOn = float(i["alert_on"])
+            is_accept = bool(i["is_accept"])
+            serveName = i["device"]["name"]
+            onPin = float(i["device"]["on_pin"])
+            alertOn = float(i["device"]["alert_on"])
             print(f"serve: {serveName} pin: {onPin} alert: {alertOn}")
-            ### Get temperature test
+            # Get temperature test
             temperature = randint(1, 100)
             humidity = randint(1, 100)
 
@@ -50,12 +65,21 @@ if __name__ == '__main__':
             headers = {
                 'Content-Type': 'application/json'
             }
-            response = requests.request("POST", f"{api_url}/temp", headers=headers, data=payload)
+            response = requests.request(
+                "POST", f"{api_url}/temp", headers=headers, data=payload)
             print(response.json())
+
+            if temperature > alertOn:
+                # notification
+                if is_accept is False:
+                    print(
+                        f"notification: {i['line_token']['token']} is {is_accept}")
+                    message = f"""{serveName} template: {temperature} humidity {humidity}"""
+                    notification(i['line_token']['token'], message)
+
 
     except Exception as ex:
         print(ex)
         pass
-
 
     sys.exit(0)
