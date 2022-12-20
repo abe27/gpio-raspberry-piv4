@@ -12,7 +12,7 @@ import (
 func GetAllTempData(c *fiber.Ctx) error {
 	var r models.Response
 	var obj []models.TempData
-	if err := configs.Store.Where("is_active=?", true).Preload("Device").Find(&obj).Error; err != nil {
+	if err := configs.Store.Order("updated_at desc").Where("is_active=?", true).Preload("Device").Find(&obj).Error; err != nil {
 		r.Message = err.Error()
 		return c.Status(fiber.StatusInternalServerError).JSON(&r)
 	}
