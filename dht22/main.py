@@ -4,6 +4,7 @@ import json
 import requests
 import sys
 import DHT22 as DHT22
+from datetime import datetime
 from random import *
 
 api_url = "http://localhost:4040/api/v1"
@@ -72,7 +73,8 @@ if __name__ == '__main__':
                 if is_accept is False:
                     print(
                         f"notification: {i['line_token']['token']} is {is_accept}")
-                    message = f"""\n{serveName}\ntemplate: {round(temperature, 2)}\nhumidity: {round(humidity, 2)}"""
+                    d = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+                    message = f"""\n{serveName}\ntemplate: {round(temperature, 2)}\nhumidity: {round(humidity, 2)}\nAt: {d}"""
                     notification(i['line_token']['token'], message)
 
     except Exception as ex:
