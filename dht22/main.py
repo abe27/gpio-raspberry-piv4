@@ -70,7 +70,7 @@ if __name__ == '__main__':
 
             if round(temperature, 2) >= alertOn:
                 # notification
-                if is_accept is False:
+                if is_accept:
                     print(
                         f"notification: {i['line_token']['token']} is {is_accept}")
                     d = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
