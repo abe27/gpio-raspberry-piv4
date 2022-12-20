@@ -111,7 +111,7 @@ const DeviceComponent = () => {
       <div className="modal" id="addNewDevice">
         <div className="modal-box">
           <h3 className="font-bold text-lg">เพิ่มรายการ Device ใหม่</h3>
-          <p className="py-4">
+          <div className="py-4">
             <a
               href="#"
               className="btn btn-sm btn-circle absolute right-2 top-2"
@@ -173,7 +173,7 @@ const DeviceComponent = () => {
                 </div>
               </div>
             </div>
-          </p>
+          </div>
           <div className="modal-action">
             <a href="#" className="btn btn-success" onClick={saveData}>
               บันทึกข้อมูล
