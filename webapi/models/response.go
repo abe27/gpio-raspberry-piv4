@@ -50,7 +50,7 @@ func (obj *LineToken) BeforeCreate(tx *gorm.DB) (err error) {
 type Notification struct {
 	ID          string    `gorm:"size:21;not null;unique;index;" json:"id,omitempty"`
 	DeviceID    string    `gorm:"size:21;not null;unique;index;" json:"device_id"`
-	LineTokenID string    `gorm:"size:21;not null;unique;index;" json:"line_token_id"`
+	LineTokenID string    `gorm:"size:21;not null;" json:"line_token_id"`
 	IsAccept    bool      `gorm:"type:boolean;not null" json:"is_accept"`
 	IsActive    bool      `gorm:"type:boolean;not null" json:"is_active"`
 	CreatedAt   time.Time `json:"created_at,omitempty" default:"now"`
