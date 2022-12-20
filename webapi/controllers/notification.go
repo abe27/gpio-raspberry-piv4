@@ -91,7 +91,7 @@ func UpdateNotificationByID(c *fiber.Ctx) error {
 	}
 
 	var line models.LineToken
-	if err := configs.Store.Where("token=?", frm.LineTokenID).First(&line).Error; err != nil {
+	if err := configs.Store.Where("description=?", frm.LineTokenID).First(&line).Error; err != nil {
 		r.Message = fmt.Sprintf("Token ID: %s is %s", frm.LineTokenID, err.Error())
 		return c.Status(fiber.StatusNotFound).JSON(&r)
 	}
