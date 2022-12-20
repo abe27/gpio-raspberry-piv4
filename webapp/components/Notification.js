@@ -12,7 +12,7 @@ const NotificationComponent = () => {
     };
 
     const res = await fetch(
-      `${process.env.API_HOST}/api/v1/token`,
+      `${process.env.API_HOST}/api/v1/notification`,
       requestOptions
     );
 
