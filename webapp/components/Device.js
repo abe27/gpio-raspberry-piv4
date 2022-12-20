@@ -19,7 +19,7 @@ const DeviceComponent = () => {
     if (res.ok) {
       const r = await res.json();
       setData(r.data);
-      console.dir(r.data);
+      // console.dir(r.data);
     }
   };
 

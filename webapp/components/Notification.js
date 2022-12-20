@@ -19,12 +19,41 @@ const NotificationComponent = () => {
     if (res.ok) {
       const r = await res.json();
       setData(r.data);
-      console.dir(r.data);
+      // console.dir(r.data);
     }
   };
 
   const saveData = () => {
     console.dir("save data");
+  };
+
+  const updateStatus = async (obj) => {
+    obj.is_accept = !obj.is_accept;
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+
+    var raw = JSON.stringify({
+      device_id: obj.device.name,
+      line_token_id: obj.line_token.description,
+      is_accept: obj.is_accept,
+      is_active: obj.is_active,
+    });
+
+    var requestOptions = {
+      method: "PUT",
+      headers: myHeaders,
+      body: raw,
+      redirect: "follow",
+    };
+
+    const res = await fetch(
+      `${process.env.API_HOST}/api/v1/notification/${obj.id}`,
+      requestOptions
+    );
+    if (res.ok) {
+      const r = await res.json();
+      fetchData();
+    }
   };
 
   useEffect(() => {
@@ -76,11 +105,14 @@ const NotificationComponent = () => {
             {data?.map((i, x) => (
               <tr key={i.id}>
                 <th>{x + 1}</th>
-                <td>{i.description}</td>
-                <td>{i.token}</td>
+                <td>{i.device.name}</td>
+                <td>{i.line_token.description}</td>
                 <td>
-                  <button className="btn btn-ghost btn-xs">
-                    {i.is_active ? (
+                  <button
+                    className="btn btn-ghost btn-xs"
+                    onClick={() => updateStatus(i)}
+                  >
+                    {i.is_accept ? (
                       <CheckIcon color="green.500" />
                     ) : (
                       <CloseIcon color={`red.500`} />
