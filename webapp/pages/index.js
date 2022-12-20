@@ -1,24 +1,63 @@
 /* eslint-disable @next/next/no-img-element */
+import { Spinner } from "@chakra-ui/react";
+import Chart from "chart.js/auto";
 import React, { useState, useEffect } from "react";
+
+// const labels = Utils.months({ count: 7 });
+// const chartData = {
+//   labels: labels,
+//   datasets: [
+//     {
+//       label: "My First Dataset",
+//       data: [65, 59, 80, 81, 56, 55, 40],
+//       fill: false,
+//       borderColor: "rgb(75, 192, 192)",
+//       tension: 0.1,
+//     },
+//   ],
+// };
+
+// const config = {
+//   type: "line",
+//   data: chartData,
+// };
+
 export default function IndexPage() {
   const [show, setShow] = useState(false);
   const [profile, setProfile] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [data, setData] = useState([]);
 
+  const reToDate = () => {
+    let d = new Date().toISOString().slice(0, 10);
+    return d;
+  };
+
+  const reDateTime = (txt) => {
+    let d = new Date(txt);
+    return `${d.getFullYear()}-${("0" + (d.getMonth() + 1)).slice(-2)}-${(
+      "0" + d.getDate()
+    ).slice(-2)} ${("0" + d.getHours()).slice(-2)}:${(
+      "0" + d.getMinutes()
+    ).slice(-2)}`;
+  };
+
   const FetchData = async () => {
+    setIsLoading(true);
     var requestOptions = {
       method: "GET",
       redirect: "follow",
     };
 
     const res = await fetch(
-      `${process.env.API_HOST}/api/v1/temp`,
+      `${process.env.API_HOST}/api/v1/temp?limit=10`,
       requestOptions
     );
     if (res.ok) {
       const r = await res.json();
       setData(r.data);
       console.dir(r.data);
+      setIsLoading(false);
     }
   };
 
@@ -28,7 +67,7 @@ export default function IndexPage() {
 
   return (
     <>
-      <div className="absolute bg-gray-200 w-full h-full">
+      <div className="absolute w-full h-full">
         {/* Navigation starts */}
         <nav className="w-full mx-auto bg-white shadow">
           <div className="container px-6 justify-between h-16 flex items-center lg:items-stretch mx-auto">
@@ -312,7 +351,7 @@ export default function IndexPage() {
         <div className="my-4 lg:my-12 container px-6 mx-auto flex flex-col lg:flex-row items-start lg:items-center justify-between pb-4 border-b border-gray-300">
           <div>
             <h4 className="text-2xl font-bold leading-tight text-gray-800">
-              บันทึกผลการวัติอุณหถูมิ
+              บันทึกผลการวัดอุณหภูมิ
             </h4>
             <ul className="flex flex-col md:flex-row items-start md:items-center text-gray-600 text-sm mt-3">
               <li className="flex items-center mr-3 mt-3 md:mt-0">
@@ -378,27 +417,37 @@ export default function IndexPage() {
                     <line x1={3} y1={21} x2={21} y2={21} />
                   </svg>
                 </span>
-                <span>Started on 29 Jan 2020</span>
+                <span>Started on {reToDate()}</span>
               </li>
             </ul>
           </div>
           <div className="mt-6 lg:mt-0">
-            <button className="transition duration-150 ease-in-out hover:bg-indigo-600 focus:outline-none border bg-indigo-700 rounded text-white px-8 py-2 text-sm">
-              โหลดข้อมูลใหม่
-            </button>
+            {isLoading ? (
+              <Spinner color="red.500" />
+            ) : (
+              <button
+                className="transition duration-150 ease-in-out hover:bg-indigo-600 focus:outline-none border bg-indigo-700 rounded text-white px-8 py-2 text-sm"
+                onClick={() => FetchData()}
+              >
+                โหลดข้อมูลใหม่
+              </button>
+            )}
           </div>
         </div>
         {/* Page title ends */}
         <div className="container mx-auto px-6">
+          {/* <div className="w-full">
+            <Chart />
+          </div> */}
           <div className="w-full">
             <div className="overflow-x-auto">
-              <table className="table w-full table-compact">
+              <table className="table table-compact table-zebra w-full">
                 <thead>
                   <tr>
                     <th>#</th>
                     <th>อุปกรณ์</th>
                     <th>อุณหภูมิ</th>
-                    <th>ความชื่น</th>
+                    <th>ความชื้น</th>
                     <th>สถานะ</th>
                     <th>อัพเดทล่าสุด</th>
                   </tr>
@@ -408,16 +457,16 @@ export default function IndexPage() {
                     <tr key={i.id}>
                       <th>{x + 1}</th>
                       <td>{i.device.name}</td>
-                      <td>{i.temp}</td>
-                      <td>{i.humidity}</td>
+                      <td>{i.temp.toFixed(2)}</td>
+                      <td>{i.humidity.toFixed(2)}</td>
                       <td>
                         {i.temp >= i.device.alert_on ? (
-                          <span className="text-rose-800">H</span>
+                          <span className="text-rose-800">สูง</span>
                         ) : (
-                          <span className="text-green-800">L</span>
+                          <span className="text-green-800">ปกติ</span>
                         )}
                       </td>
-                      <td>{i.on_date_time}</td>
+                      <td>{reDateTime(i.on_date_time)}</td>
                     </tr>
                   ))}
                 </tbody>
