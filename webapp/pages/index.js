@@ -42,7 +42,7 @@ const IndexPage = () => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className="absolute w-full h-full">
+      <div className="absolute w-full h-full mb-4">
         {/* Page title starts */}
         <div className="my-4 lg:my-12 container px-6 mx-auto flex flex-col lg:flex-row items-start lg:items-center justify-between pb-4 border-b border-gray-300">
           <div>

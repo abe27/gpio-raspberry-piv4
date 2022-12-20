@@ -86,15 +86,7 @@ const NotificationComponent = () => {
         <table className="table table-zebra table-compact w-full">
           <thead>
             <tr>
-              <th>
-                <a
-                  href="#addNewDevice"
-                  htmlFor="addNewDevice"
-                  className="btn btn-ghost btn-xs"
-                >
-                  <AddIcon color={`blue.500`} />
-                </a>
-              </th>
+              <th></th>
               <th>หัวข้อ</th>
               <th>เลขที่ Token</th>
               <th>สถานะ</th>
