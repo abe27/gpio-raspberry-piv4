@@ -86,13 +86,13 @@ func UpdateNotificationByID(c *fiber.Ctx) error {
 
 	var device models.Device
 	if err := configs.Store.Where("name=?", frm.DeviceID).First(&device).Error; err != nil {
-		r.Message = fmt.Sprintf("Device ID: %s is %s", frm.ID, err.Error())
+		r.Message = fmt.Sprintf("Device ID: %s is %s", frm.DeviceID, err.Error())
 		return c.Status(fiber.StatusNotFound).JSON(&r)
 	}
 
 	var line models.LineToken
 	if err := configs.Store.Where("token=?", frm.LineTokenID).First(&line).Error; err != nil {
-		r.Message = fmt.Sprintf("Device ID: %s is %s", frm.ID, err.Error())
+		r.Message = fmt.Sprintf("Device ID: %s is %s", frm.LineTokenID, err.Error())
 		return c.Status(fiber.StatusNotFound).JSON(&r)
 	}
 
