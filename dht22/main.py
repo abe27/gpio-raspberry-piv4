@@ -68,7 +68,7 @@ if __name__ == '__main__':
                 "POST", f"{api_url}/temp", headers=headers, data=payload)
             print(response.json())
 
-            if int(temperature) >= alertOn:
+            if round(temperature, 2) >= alertOn:
                 # notification
                 if is_accept is False:
                     print(
