@@ -19,7 +19,7 @@ const IndexPage = () => {
     };
 
     const res = await fetch(
-      `${process.env.API_HOST}/api/v1/temp?limit=60`,
+      `${process.env.API_HOST}/api/v1/temp?limit=20`,
       requestOptions
     );
     if (res.ok) {
@@ -162,15 +162,35 @@ const IndexPage = () => {
                   {data?.map((i, x) => (
                     <tr key={i.id} className="hover">
                       <th>{x + 1}</th>
-                      <td>{i.device.name}</td>
                       <td>
-                        <span className="text-orange-600">
+                        <span
+                          className={
+                            i.percent > 100
+                              ? `text-rose-600`
+                              : i.percent >= 89
+                              ? `text-orange-600`
+                              : ``
+                          }
+                        >
+                          {i.device.name}
+                        </span>
+                      </td>
+                      <td>
+                        <span className="text-indigo-600">
                           {i.device.alert_on.toFixed(2)}
                         </span>
                       </td>
                       <td>{i.temp.toFixed(2)}</td>
                       <td>{i.humidity.toFixed(2)}</td>
-                      <td>{i.percent} %</td>
+                      <td>
+                        <span
+                          className={
+                            i.percent < 89 ? `text-indigo-600` : "text-rose-500"
+                          }
+                        >
+                          {i.percent} %
+                        </span>
+                      </td>
                       <td>
                         {i.temp >= i.device.alert_on ? (
                           <span className="text-rose-600">😡 ร้อนมาก</span>
