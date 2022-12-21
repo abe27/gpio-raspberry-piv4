@@ -24,6 +24,9 @@ const IndexPage = () => {
     );
     if (res.ok) {
       const r = await res.json();
+      r.data.map((i) => {
+        i.percent = ((i.temp * 100) / i.device.alert_on).toFixed(2);
+      });
       setData(r.data);
       console.dir(r.data);
       setIsLoading(false);
@@ -44,13 +47,13 @@ const IndexPage = () => {
       </Head>
       <div className="absolute w-full h-full mb-4">
         {/* Page title starts */}
-        <div className="my-4 lg:my-12 container px-6 mx-auto flex flex-col lg:flex-row items-start lg:items-center justify-between pb-4 border-b border-gray-300">
+        <div className="container flex flex-col items-start justify-between px-6 pb-4 mx-auto my-4 border-b border-gray-300 lg:my-12 lg:flex-row lg:items-center">
           <div>
             <h4 className="text-2xl font-bold leading-tight text-gray-800">
               บันทึกผลการวัดอุณหภูมิ
             </h4>
-            <ul className="flex flex-col md:flex-row items-start md:items-center text-gray-600 text-sm mt-3">
-              <li className="flex items-center mr-3 mt-3 md:mt-0">
+            <ul className="flex flex-col items-start mt-3 text-sm text-gray-600 md:flex-row md:items-center">
+              <li className="flex items-center mt-3 mr-3 md:mt-0">
                 <span className="mr-2">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -70,7 +73,7 @@ const IndexPage = () => {
                 </span>
                 <span>Active</span>
               </li>
-              <li className="flex items-center mr-3 mt-3 md:mt-0">
+              <li className="flex items-center mt-3 mr-3 md:mt-0">
                 <span className="mr-2">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -119,7 +122,7 @@ const IndexPage = () => {
           </div>
           <div className="mt-6 lg:mt-0">
             <Link href="/setup" target="_blank">
-              <button className="transition duration-150 ease-in-out hover:bg-orange-600 focus:outline-none border bg-orange-700 rounded text-white px-8 py-2 text-sm">
+              <button className="px-8 py-2 text-sm text-white transition duration-150 ease-in-out bg-orange-700 border rounded hover:bg-orange-600 focus:outline-none">
                 ตั้งค่าระบบ
               </button>
             </Link>
@@ -127,7 +130,7 @@ const IndexPage = () => {
               <Spinner color="red.500" />
             ) : (
               <button
-                className="transition duration-150 ease-in-out hover:bg-indigo-600 focus:outline-none border bg-indigo-700 rounded text-white px-8 py-2 text-sm"
+                className="px-8 py-2 text-sm text-white transition duration-150 ease-in-out bg-indigo-700 border rounded hover:bg-indigo-600 focus:outline-none"
                 onClick={() => FetchData()}
               >
                 โหลดข้อมูลใหม่
@@ -136,35 +139,45 @@ const IndexPage = () => {
           </div>
         </div>
         {/* Page title ends */}
-        <div className="container mx-auto px-6">
+        <div className="container px-6 mx-auto">
           {/* <div className="w-full">
             <Chart />
           </div> */}
           <div className="w-full">
             <div className="overflow-x-auto">
-              <table className="table table-compact table-zebra w-full">
+              <table className="table w-full table-compact table-zebra">
                 <thead>
                   <tr>
                     <th>#</th>
                     <th>อุปกรณ์</th>
+                    <th>แจ้งเตือนที่</th>
                     <th>อุณหภูมิ</th>
                     <th>ความชื้น</th>
+                    <th>ค่าเฉลี่ย %</th>
                     <th>สถานะ</th>
                     <th>อัพเดทล่าสุด</th>
                   </tr>
                 </thead>
                 <tbody>
                   {data?.map((i, x) => (
-                    <tr key={i.id}>
+                    <tr key={i.id} className="hover">
                       <th>{x + 1}</th>
                       <td>{i.device.name}</td>
+                      <td>
+                        <span className="text-orange-600">
+                          {i.device.alert_on.toFixed(2)}
+                        </span>
+                      </td>
                       <td>{i.temp.toFixed(2)}</td>
                       <td>{i.humidity.toFixed(2)}</td>
+                      <td>{i.percent} %</td>
                       <td>
                         {i.temp >= i.device.alert_on ? (
-                          <span className="text-rose-800">สูง</span>
+                          <span className="text-rose-600">😡 สูง</span>
+                        ) : i.percent > 90 ? (
+                          <span className="text-orange-600">😓 อุ่น</span>
                         ) : (
-                          <span className="text-green-800">ปกติ</span>
+                          <span className="text-green-600">😴 ปกติ</span>
                         )}
                       </td>
                       <td>{reDateTime(i.on_date_time)}</td>
