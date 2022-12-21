@@ -173,7 +173,7 @@ const IndexPage = () => {
                       <td>{i.percent} %</td>
                       <td>
                         {i.temp >= i.device.alert_on ? (
-                          <span className="text-rose-600">😡 สูง</span>
+                          <span className="text-rose-600">😡 ร้อนมาก</span>
                         ) : i.percent > 90 ? (
                           <span className="text-orange-600">😓 อุ่น</span>
                         ) : (
