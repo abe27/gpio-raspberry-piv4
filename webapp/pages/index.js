@@ -196,10 +196,10 @@ const IndexPage = () => {
                           <span className="text-rose-600">😡 ร้อน</span>
                         ) : i.percent >= 89 ? (
                           <span className="text-orange-600">😓 อุ่น</span>
-                        ) :  i.percent >= 85 ? (
-                          <span className="text-indigo-600">😊 เย็น</span>
+                        ) :  i.percent >= 80 ? (
+                          <span className="text-indigo-600">😴 ปกติ</span>
                         ) :(
-                          <span className="text-green-600">😴 ปกติ</span>
+                          <span className="text-green-600">😊 เย็น</span>
                         )}
                       </td>
                       <td>{reDateTime(i.on_date_time)}</td>
