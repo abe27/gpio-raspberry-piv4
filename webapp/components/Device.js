@@ -93,6 +93,11 @@ const DeviceComponent = () => {
     updateData(i);
   };
 
+  const nameChange = (i, e) => {
+    i.name = e.target.value;
+    updateData(i);
+  };
+
   const saveData = async () => {
     console.log(alertOn);
     if (deviceName === null || deviceName === "") {
@@ -270,11 +275,18 @@ const DeviceComponent = () => {
             {data?.map((i, x) => (
               <tr key={i.id}>
                 <th>{x + 1}</th>
-                <td>{i.name}</td>
+                <td>
+                <input
+                    type="text"
+                    className="input input-xs"
+                    defaultValue={i.name}
+                    onChange={(e) => nameChange(i, e)}
+                  />
+                </td>
                 <td>
                   <input
                     type="number"
-                    className="w-24 input input-bordered input-xs"
+                    className="w-24 input input-xs"
                     defaultValue={i.on_pin}
                     onChange={(e) => OnPinChange(i, e)}
                   />
@@ -282,7 +294,7 @@ const DeviceComponent = () => {
                 <td>
                   <input
                     type="number"
-                    className="w-24 input input-bordered input-xs"
+                    className="w-24 input input-xs"
                     defaultValue={i.alert_on}
                     onChange={(e) => alertOnChange(i, e)}
                   />
