@@ -18,8 +18,8 @@ const SetUpPage = () => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className="absolute w-full h-full">
-        <div className="container mx-auto px-6 mt-4">
+      <div className="absolute w-full">
+        <div className="container px-6 mx-auto mt-4">
           <div className="w-full">
             <Tabs align="end" variant="enclosed">
               <TabList>

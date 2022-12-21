@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
 import { AddIcon, CheckIcon, CloseIcon } from "@chakra-ui/icons";
-import { reDateTime } from "../hooks/greeter";
 import { useToast } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
+import { reDateTime } from "../hooks/greeter";
 
 const DeviceComponent = () => {
   const toast = useToast();
@@ -26,6 +26,71 @@ const DeviceComponent = () => {
       setData(r.data);
       // console.dir(r.data);
     }
+  };
+
+  const updateData = async (obj) => {
+    console.dir(obj);
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+
+    var raw = JSON.stringify({
+      name: obj.name,
+      on_pin: obj.on_pin,
+      alert_on: obj.alert_on,
+      is_active: true,
+    });
+
+    var requestOptions = {
+      method: "PUT",
+      headers: myHeaders,
+      body: raw,
+      redirect: "follow",
+    };
+
+    const res = await fetch(
+      `${process.env.API_HOST}/api/v1/device/${obj.id}`,
+      requestOptions
+    );
+
+    if (res.ok) {
+      toast({
+        title: "บันทึกข้อมูลเรียบร้อยแล้ว",
+        status: "success",
+        duration: 1500,
+        isClosable: true,
+        position: "top-right",
+        onCloseComplete: () =>fetchData()
+      });
+    }
+
+    if (!res.ok) {
+      toast({
+        title: "เกิดข้อผิดพลาด",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+        position: "top",
+        onCloseComplete: () =>fetchData()
+      });
+    }
+  };
+
+  const OnPinChange = (i, e) => {
+    let x = 0;
+    if (parseInt(e.target.value)) {
+      x = parseInt(e.target.value);
+    }
+    i.on_pin = x;
+    updateData(i);
+  };
+
+  const alertOnChange = (i, e) => {
+    let x = 0;
+    if (parseInt(e.target.value)) {
+      x = parseInt(e.target.value);
+    }
+    i.alert_on = x;
+    updateData(i);
   };
 
   const saveData = async () => {
@@ -110,16 +175,16 @@ const DeviceComponent = () => {
     <>
       <div className="modal" id="addNewDevice">
         <div className="modal-box">
-          <h3 className="font-bold text-lg">เพิ่มรายการ Device ใหม่</h3>
+          <h3 className="text-lg font-bold">เพิ่มรายการ Device ใหม่</h3>
           <div className="py-4">
             <a
               href="#"
-              className="btn btn-sm btn-circle absolute right-2 top-2"
+              className="absolute btn btn-sm btn-circle right-2 top-2"
             >
               ✕
             </a>
             <div className="">
-              <div className="form-control w-full">
+              <div className="w-full form-control">
                 <label className="label">
                   <span className="label-text">ชื่ออุปกรณ์</span>
                   <span className="label-text-alt">ระบุข้อมูล</span>
@@ -127,7 +192,7 @@ const DeviceComponent = () => {
                 <input
                   type="text"
                   placeholder="Type here"
-                  className="input input-sm input-bordered w-full"
+                  className="w-full input input-sm input-bordered"
                   defaultValue={deviceName}
                   onChange={(e) => setDeviceName(e.target.value)}
                 />
@@ -137,7 +202,7 @@ const DeviceComponent = () => {
                 </label>
               </div>
               <div className="flex justify-start space-x-4">
-                <div className="form-control w-full">
+                <div className="w-full form-control">
                   <label className="label">
                     <span className="label-text">เลขที่ PIN</span>
                     <span className="label-text-alt">ระบุข้อมูล</span>
@@ -145,7 +210,7 @@ const DeviceComponent = () => {
                   <input
                     type="number"
                     placeholder="Type here"
-                    className="input input-sm input-bordered w-full"
+                    className="w-full input input-sm input-bordered"
                     defaultValue={pinNumber}
                     onChange={(e) => setPinNumber(e.target.value)}
                   />
@@ -154,7 +219,7 @@ const DeviceComponent = () => {
                     <span className="label-text-alt"></span>
                   </label>
                 </div>
-                <div className="form-control w-full">
+                <div className="w-full form-control">
                   <label className="label">
                     <span className="label-text">แจ้งเตือนที่อุณหภูมิ</span>
                     <span className="label-text-alt">ระบุข้อมูล</span>
@@ -162,7 +227,7 @@ const DeviceComponent = () => {
                   <input
                     type="number"
                     placeholder="Type here"
-                    className="input input-sm input-bordered w-full"
+                    className="w-full input input-sm input-bordered"
                     defaultValue={alertOn}
                     onChange={(e) => setAlertOn(e.target.value)}
                   />
@@ -182,7 +247,7 @@ const DeviceComponent = () => {
         </div>
       </div>
       <div className="overflow-x-auto">
-        <table className="table table-zebra table-compact w-full">
+        <table className="table w-full table-zebra table-compact">
           <thead>
             <tr>
               <th>
@@ -206,11 +271,21 @@ const DeviceComponent = () => {
               <tr key={i.id}>
                 <th>{x + 1}</th>
                 <td>{i.name}</td>
-                <td>{i.on_pin}</td>
                 <td>
-                  <span className="text-yellow-800 hover:cursor-pointer">
-                    {i.alert_on}
-                  </span>
+                  <input
+                    type="number"
+                    className="w-24 input input-bordered input-xs"
+                    defaultValue={i.on_pin}
+                    onChange={(e) => OnPinChange(i, e)}
+                  />
+                </td>
+                <td>
+                  <input
+                    type="number"
+                    className="w-24 input input-bordered input-xs"
+                    defaultValue={i.alert_on}
+                    onChange={(e) => alertOnChange(i, e)}
+                  />
                 </td>
                 <td>
                   <button className="btn btn-ghost btn-xs">
