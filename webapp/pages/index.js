@@ -192,11 +192,13 @@ const IndexPage = () => {
                         </span>
                       </td>
                       <td>
-                        {i.temp >= i.device.alert_on ? (
-                          <span className="text-rose-600">😡 ร้อนมาก</span>
+                        {i.percent >= 99 ? (
+                          <span className="text-rose-600">😡 ร้อน</span>
                         ) : i.percent >= 89 ? (
                           <span className="text-orange-600">😓 อุ่น</span>
-                        ) : (
+                        ) :  i.percent >= 85 ? (
+                          <span className="text-indigo-600">😊 เย็น</span>
+                        ) :(
                           <span className="text-green-600">😴 ปกติ</span>
                         )}
                       </td>
