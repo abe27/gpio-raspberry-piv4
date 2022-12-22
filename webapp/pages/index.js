@@ -10,6 +10,8 @@ const IndexPage = () => {
   const [profile, setProfile] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [data, setData] = useState([]);
+  const [limit, setLimit] = useState(15);
+  const [page, setPage] = useState(1)
 
   const FetchData = async () => {
     setIsLoading(true);
@@ -19,7 +21,7 @@ const IndexPage = () => {
     };
 
     const res = await fetch(
-      `${process.env.API_HOST}/api/v1/temp?limit=20`,
+      `${process.env.API_HOST}/api/v1/temp?limit=${limit}&page=${page}`,
       requestOptions
     );
     if (res.ok) {
@@ -35,7 +37,13 @@ const IndexPage = () => {
 
   useEffect(() => {
     FetchData();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    FetchData();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [page])
 
   return (
     <>
@@ -196,9 +204,9 @@ const IndexPage = () => {
                           <span className="text-rose-600">😡 ร้อน</span>
                         ) : i.percent >= 89 ? (
                           <span className="text-orange-600">😓 อุ่น</span>
-                        ) :  i.percent >= 80 ? (
+                        ) : i.percent >= 80 ? (
                           <span className="text-indigo-600">😴 ปกติ</span>
-                        ) :(
+                        ) : (
                           <span className="text-green-600">😊 เย็น</span>
                         )}
                       </td>
@@ -207,6 +215,20 @@ const IndexPage = () => {
                   ))}
                 </tbody>
               </table>
+            </div>
+          </div>
+          <div className="flex justify-center mt-4">
+            <div className="btn-group">
+              <button className={page <= 1 ? "btn btn-sm btn-disabled" : "btn btn-sm"} onClick={() => {
+                let l = page - 1
+                if (l <= 0) {
+                  l = 1
+                }
+                setPage(l)
+              }}>«</button>
+              {page > 1 ? <button className="btn btn-sm" onClick={() => setPage(1)}>1...</button>:""}
+              <button className="btn btn-sm">Page {page}</button>
+              <button className="btn btn-sm" onClick={() => setPage(page+1)}>»</button>
             </div>
           </div>
         </div>
