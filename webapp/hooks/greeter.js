@@ -12,4 +12,11 @@ const reDateTime = (txt) => {
   )}`;
 };
 
-export { reToDate, reDateTime };
+const reTime = (txt) => {
+  let d = new Date(txt);
+  return `${("0" + d.getHours()).slice(-2)}:${("0" + d.getMinutes()).slice(
+    -2
+  )}`;
+};
+
+export { reToDate, reDateTime, reTime };

@@ -3,15 +3,45 @@ import { Spinner } from "@chakra-ui/react";
 import Head from "next/head";
 import Link from "next/link";
 import React, { useState, useEffect } from "react";
-import { reToDate, reDateTime } from "../hooks/greeter";
+import { reToDate, reDateTime, reTime } from "../hooks/greeter";
+import { LineChart} from "../components"
 
 const IndexPage = () => {
-  const [show, setShow] = useState(false);
-  const [profile, setProfile] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [data, setData] = useState([]);
-  const [limit, setLimit] = useState(15);
-  const [page, setPage] = useState(1)
+  const [limit, setLimit] = useState(5);
+  const [page, setPage] = useState(1);
+  const [dataChart, setDataChart] = useState([]);
+
+  const FetchChart = async () => {
+    setIsLoading(true);
+    var requestOptions = {
+      method: "GET",
+      redirect: "follow",
+    };
+
+    const res = await fetch(
+      `${process.env.API_HOST}/api/v1/temp?limit=${limit*200}&page=${page}`,
+      requestOptions
+    );
+    if (res.ok) {
+      const r = await res.json();
+      // const dataChart = [{ name: "Page A", uv: 400, pv: 2400, amt: 2400 }];
+      // let docs = [];
+      r.data.map((i) => {
+        i.percent = ((i.temp * 100) / i.device.alert_on).toFixed(2);
+        // docs.push({
+        //   on_date_time: reTime(i.on_date_time),
+        //   name: i.device.name,
+        //   temp_a: i.temp,
+        //   temp_b: i.percent,
+        // });
+      });
+      setDataChart(r.data);
+      console.dir(r.data);
+      setIsLoading(false);
+    }
+  };
 
   const FetchData = async () => {
     setIsLoading(true);
@@ -30,20 +60,22 @@ const IndexPage = () => {
         i.percent = ((i.temp * 100) / i.device.alert_on).toFixed(2);
       });
       setData(r.data);
-      console.dir(r.data);
+      // console.dir(r.data);
       setIsLoading(false);
     }
   };
 
   useEffect(() => {
     FetchData();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    FetchChart();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     FetchData();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page])
+    FetchChart();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [page]);
 
   return (
     <>
@@ -148,9 +180,9 @@ const IndexPage = () => {
         </div>
         {/* Page title ends */}
         <div className="container px-6 mx-auto">
-          {/* <div className="w-full">
-            <Chart />
-          </div> */}
+          <div className="w-full">
+            <LineChart data={dataChart}/>
+          </div>
           <div className="w-full">
             <div className="overflow-x-auto">
               <table className="table w-full table-compact table-zebra">
@@ -219,16 +251,29 @@ const IndexPage = () => {
           </div>
           <div className="flex justify-center mt-4">
             <div className="btn-group">
-              <button className={page <= 1 ? "btn btn-sm btn-disabled" : "btn btn-sm"} onClick={() => {
-                let l = page - 1
-                if (l <= 0) {
-                  l = 1
-                }
-                setPage(l)
-              }}>«</button>
-              {page > 1 ? <button className="btn btn-sm" onClick={() => setPage(1)}>1...</button>:""}
+              <button
+                className={page <= 1 ? "btn btn-sm btn-disabled" : "btn btn-sm"}
+                onClick={() => {
+                  let l = page - 1;
+                  if (l <= 0) {
+                    l = 1;
+                  }
+                  setPage(l);
+                }}
+              >
+                «
+              </button>
+              {page > 1 ? (
+                <button className="btn btn-sm" onClick={() => setPage(1)}>
+                  1...
+                </button>
+              ) : (
+                ""
+              )}
               <button className="btn btn-sm">Page {page}</button>
-              <button className="btn btn-sm" onClick={() => setPage(page+1)}>»</button>
+              <button className="btn btn-sm" onClick={() => setPage(page + 1)}>
+                »
+              </button>
             </div>
           </div>
         </div>
