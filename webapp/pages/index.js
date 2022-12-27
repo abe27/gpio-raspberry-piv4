@@ -8,7 +8,7 @@ import { reToDate, reDateTime, reTime } from "../hooks/greeter";
 const IndexPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [data, setData] = useState([]);
-  const [limit, setLimit] = useState(5);
+  const [limit, setLimit] = useState(process.env.LIMIT_PAGE || 100);
   const [page, setPage] = useState(1);
   const [dataChart, setDataChart] = useState([]);
 
@@ -20,7 +20,7 @@ const IndexPage = () => {
     };
 
     const res = await fetch(
-      `${process.env.API_HOST}/api/v1/temp?limit=${60*24}&page=${page}`,
+      `${process.env.API_HOST}/api/v1/temp?limit=${limit * 24}&page=${page}`,
       requestOptions
     );
     if (res.ok) {
@@ -50,7 +50,7 @@ const IndexPage = () => {
     };
 
     const res = await fetch(
-      `${process.env.API_HOST}/api/v1/temp?limit=${process.env.LIMIT_PAGE || 100}&page=${page}`,
+      `${process.env.API_HOST}/api/v1/temp?limit=${limit}&page=${page}`,
       requestOptions
     );
     if (res.ok) {
@@ -74,7 +74,7 @@ const IndexPage = () => {
     FetchData();
     FetchChart();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page]);
+  }, [page, limit]);
 
   return (
     <>
@@ -180,7 +180,31 @@ const IndexPage = () => {
         {/* Page title ends */}
         <div className="container px-6 mx-auto">
           <div className="w-full">
-            <div className="overflow-x-auto">
+            <div className="flex justify-start space-x-4">
+              <div className="text-center">
+                <span className="">Limit Page:</span>
+              </div>
+              <div className="text-center">
+                <select
+                  className="w-full max-w-xs select select-sm"
+                  defaultValue={limit}
+                  onChange={(e) => setLimit(e.target.value)}
+                >
+                  <option value={5}>5</option>
+                  <option value={10}>10</option>
+                  <option value={15}>15</option>
+                  <option value={20}>20</option>
+                  <option value={30}>30</option>
+                  <option value={40}>40</option>
+                  <option value={60}>60</option>
+                  <option value={80}>80</option>
+                  <option value={100}>100</option>
+                  <option value={120}>120</option>
+                  <option value={150}>150</option>
+                </select>
+              </div>
+            </div>
+            <div className="mt-4 overflow-x-auto">
               <table className="table w-full table-compact table-zebra">
                 <thead>
                   <tr>
