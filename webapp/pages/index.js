@@ -51,7 +51,7 @@ const IndexPage = () => {
     };
 
     const res = await fetch(
-      `${process.env.API_HOST}/api/v1/temp?limit=${process.env.LIMIT_PAGE}&page=${page}`,
+      `${process.env.API_HOST}/api/v1/temp?limit=${process.env.LIMIT_PAGE || 100}&page=${page}`,
       requestOptions
     );
     if (res.ok) {

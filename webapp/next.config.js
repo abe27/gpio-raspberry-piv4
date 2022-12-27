@@ -4,7 +4,7 @@ const nextConfig = {
     env: {
         APP_NAME: process.env.APP_NAME,
         API_HOST: process.env.API_HOST,
-        LIMIT_PAGE: process.env.LIMIT_PAGE || 100,
+        LIMIT_PAGE: process.env.LIMIT_PAGE,
     },
 };
 
