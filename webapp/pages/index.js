@@ -182,22 +182,22 @@ const IndexPage = () => {
           <div className="w-full">
             <div className="flex justify-start space-x-4">
               <div class="px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                <dt class="text-sm font-medium ">Limit Page:</dt>
+                <dt class="text-sm font-medium ">แสดง:</dt>
                 <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
                   <select
                     className="w-full max-w-xs select select-xs"
                     defaultValue={limit}
                     onChange={(e) => setLimit(e.target.value)}
                   >
-                    <option value={5}>5</option>
-                    <option value={10}>10</option>
-                    <option value={15}>15</option>
-                    <option value={20}>20</option>
-                    <option value={25}>30</option>
-                    <option value={30}>40</option>
-                    <option value={35}>60</option>
-                    <option value={40}>80</option>
-                    <option value={100}>100</option>
+                    <option value={5}>5 รายการล่าสุด</option>
+                    <option value={10}>10 รายการล่าสุด</option>
+                    <option value={15}>15 รายการล่าสุด</option>
+                    <option value={20}>20 รายการล่าสุด</option>
+                    <option value={25}>30 รายการล่าสุด</option>
+                    <option value={30}>40 รายการล่าสุด</option>
+                    <option value={35}>60 รายการล่าสุด</option>
+                    <option value={40}>80 รายการล่าสุด</option>
+                    <option value={100}>100 รายการล่าสุด</option>
                   </select>
                 </dd>
               </div>
