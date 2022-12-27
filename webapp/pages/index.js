@@ -181,30 +181,28 @@ const IndexPage = () => {
         <div className="container px-6 mx-auto">
           <div className="w-full">
             <div className="flex justify-start space-x-4">
-              <div className="text-center">
-                <span className="">Limit Page:</span>
-              </div>
-              <div className="text-center">
-                <select
-                  className="w-full max-w-xs select select-sm"
-                  defaultValue={limit}
-                  onChange={(e) => setLimit(e.target.value)}
-                >
-                  <option value={5}>5</option>
-                  <option value={10}>10</option>
-                  <option value={15}>15</option>
-                  <option value={20}>20</option>
-                  <option value={30}>30</option>
-                  <option value={40}>40</option>
-                  <option value={60}>60</option>
-                  <option value={80}>80</option>
-                  <option value={100}>100</option>
-                  <option value={120}>120</option>
-                  <option value={150}>150</option>
-                </select>
+              <div class="px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                <dt class="text-sm font-medium ">Limit Page:</dt>
+                <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
+                  <select
+                    className="w-full max-w-xs select select-xs"
+                    defaultValue={limit}
+                    onChange={(e) => setLimit(e.target.value)}
+                  >
+                    <option value={5}>5</option>
+                    <option value={10}>10</option>
+                    <option value={15}>15</option>
+                    <option value={20}>20</option>
+                    <option value={25}>30</option>
+                    <option value={30}>40</option>
+                    <option value={35}>60</option>
+                    <option value={40}>80</option>
+                    <option value={100}>100</option>
+                  </select>
+                </dd>
               </div>
             </div>
-            <div className="mt-4 overflow-x-auto">
+            <div className="mt-2 overflow-x-auto">
               <table className="table w-full table-compact table-zebra">
                 <thead>
                   <tr>
