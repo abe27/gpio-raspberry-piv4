@@ -4,7 +4,6 @@ import Head from "next/head";
 import Link from "next/link";
 import React, { useState, useEffect } from "react";
 import { reToDate, reDateTime, reTime } from "../hooks/greeter";
-import { LineChart} from "../components"
 
 const IndexPage = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -180,9 +179,6 @@ const IndexPage = () => {
         </div>
         {/* Page title ends */}
         <div className="container px-6 mx-auto">
-          <div className="w-full">
-            <LineChart data={dataChart}/>
-          </div>
           <div className="w-full">
             <div className="overflow-x-auto">
               <table className="table w-full table-compact table-zebra">
