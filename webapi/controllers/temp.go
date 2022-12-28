@@ -13,7 +13,11 @@ import (
 func GetAllTempData(c *fiber.Ctx) error {
 	var r models.Response
 	var obj []models.TempData
-	if err := configs.Store.Scopes(services.Paginate(c)).Order("updated_at desc").Where("is_active=?", true).Preload("Device").Find(&obj).Error; err != nil {
+	etd := time.Now().Format("yyyy-MM-dd")
+	if c.Params("dte") != "" {
+		etd = c.Params("dte")
+	}
+	if err := configs.Store.Scopes(services.Paginate(c)).Order("updated_at desc").Where("on_date_time >= ?", etd).Where("is_active=?", true).Preload("Device").Find(&obj).Error; err != nil {
 		r.Message = err.Error()
 		return c.Status(fiber.StatusInternalServerError).JSON(&r)
 	}
