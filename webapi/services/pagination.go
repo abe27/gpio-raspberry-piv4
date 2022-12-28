@@ -16,8 +16,8 @@ func Paginate(c *fiber.Ctx) func(db *gorm.DB) *gorm.DB {
 
 		pageSize, _ := strconv.Atoi(c.Query("limit"))
 		switch {
-		case pageSize > 100:
-			pageSize = 100
+		// case pageSize > 100:
+		// 	pageSize = 100
 		case pageSize <= 0:
 			pageSize = 10
 		}
