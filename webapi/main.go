@@ -21,7 +21,7 @@ import (
 func init() {
 	err := godotenv.Load(".env.local")
 	if err != nil {
-		panic("Error loading .env file")
+		panic("Error loading .env.local file")
 	}
 
 	// Initial ENV
