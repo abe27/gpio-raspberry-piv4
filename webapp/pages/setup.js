@@ -1,12 +1,11 @@
 /* eslint-disable @next/next/no-img-element */
-import { Tabs, TabList, TabPanels, Tab, TabPanel } from "@chakra-ui/react";
+import { Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
 import Head from "next/head";
-import Link from "next/link";
-import React, { useState, useEffect } from "react";
+import React from "react";
 import {
   DeviceComponent,
   LineTokenComponent,
-  NotificationComponent,
+  NotificationComponent
 } from "../components";
 
 const SetUpPage = () => {
